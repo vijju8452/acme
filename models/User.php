@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "user".
@@ -25,6 +26,9 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
+    const STATUS_INSERTED = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_BLOCKED = 2;
     /**
      * {@inheritdoc}
      */
@@ -41,13 +45,28 @@ class User extends \yii\db\ActiveRecord
         return [
             [['uid', 'username', 'email', 'password'], 'required'],
             [['status', 'contact_email', 'contact_phone'], 'integer'],
+            [['email'],'email'],
             [['created', 'updated'], 'safe'],
             [['uid', 'password'], 'string', 'max' => 60],
             [['username'], 'string', 'max' => 45],
             [['email'], 'string', 'max' => 255],
             [['uid'], 'unique'],
-            [['email'], 'unique'],
+            [['username','email'], 'unique'],
         ];
+    }
+    public function beforeValidate() {
+        $this->setUid();
+        return parent::beforeValidate();
+    }
+    public function beforeSave($insert) {
+        if($this->isNewRecord){
+            $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+        }
+        $this->updated = new Expression('now()');
+        return parent::beforeSave($insert);
+    }
+    private function setUid(){
+        $this->uid = Yii::$app->getSecurity()->generatePasswordHash(date('ymdHis'.rand(1, 999999)));
     }
 
     /**

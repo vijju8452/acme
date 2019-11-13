@@ -47,14 +47,15 @@ $config = [
             'class' => 'codemix\localeurls\UrlManager',
             // List all supported languages here
             // Make sure, you include your app's default language.
-            'languages' => ['en', 'fr', 'de', 'ru'],
-        ],
-        /*
-          'urlManager' => [
+          'languages' => ['en', 'fr', 'de', 'ru'], 
           'enablePrettyUrl' => true,
           'showScriptName' => false,
           'rules' => [
           ],
+        ],
+        /*
+          'urlManager' => [
+         
           ],
          */
         'i18n' => [

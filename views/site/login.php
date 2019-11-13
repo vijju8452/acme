@@ -42,6 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-lg-offset-1" style="color:#999;">
         
-        To modify the username/password, please check out the code <code>app\models\User::$users</code>.
+        <?= Yii::t('app','if no account you can {register}',[
+            'register' => Html::a(Yii::t('app','register'),['site/register'])
+        ]); ?>
     </div>
 </div>
